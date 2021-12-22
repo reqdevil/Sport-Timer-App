@@ -44,10 +44,10 @@ class _SessionPageState extends State<SessionPage> {
                   color: Colors.red,
                   child: const Center(
                     child: Text(
-                      "This will be placed Set-Round-Timer",
+                      "This will be placed Session",
                       style: TextStyle(
                         color: AppColor.white,
-                        fontSize: 20,
+                        fontSize: 30,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
