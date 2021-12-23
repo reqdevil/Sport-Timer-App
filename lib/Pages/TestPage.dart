@@ -3,8 +3,9 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:timer_app/Painters/LinearPainter.dart';
 import 'package:timer_app/Utilities/AppColor.dart';
-import 'package:timer_app/Utilities/SquarePercentIndicator.dart';
+import 'package:timer_app/Widgets/SquarePercentIndicator.dart';
 import 'package:timer_app/Utilities/StartAngle.dart';
 
 class TestPage extends StatefulWidget {
@@ -24,96 +25,97 @@ class _TestPageState extends State<TestPage> {
       body: SafeArea(
         child: Stack(
           children: [
-            Center(
-              child: AspectRatio(
-                aspectRatio: 1,
-                child: Container(
-                  margin: const EdgeInsets.all(50),
-                  color: AppColor.darkPrimaryColor,
-                  child: SquarePercentIndicator(
-                    borderRadius: 15,
-                    progress: progress,
-                    progressWidth: 20,
-                    shadowWidth: 20,
-                    progressColor: AppColor.secondaryColor,
-                    shadowColor: AppColor.primaryColor,
-                    startAngle: StartAngle.leftCenter,
-                    reverse: true,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: const [
-                              SizedBox(height: 30),
-                              Text(
-                                "ROUND",
-                                style: TextStyle(
-                                  color: AppColor.white,
-                                  fontSize: 30,
-                                ),
-                              ),
-                              Text(
-                                "3 of 5",
-                                style: TextStyle(
-                                  color: AppColor.white,
-                                  fontSize: 30,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        Expanded(
-                          child: Text(
-                            second.toString(),
-                            style: const TextStyle(
-                              fontSize: 100,
-                              fontWeight: FontWeight.bold,
-                              color: AppColor.white,
-                            ),
-                          ),
-                        ),
-                        Expanded(
-                            child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: const [
-                            Text(
-                              "Pushups",
-                              style: TextStyle(
-                                color: AppColor.white,
-                                fontSize: 30,
-                              ),
-                            ),
-                            Text(
-                              "Next: Burpies",
-                              style: TextStyle(
-                                color: AppColor.backgroundColor,
-                                fontSize: 15,
-                              ),
-                            ),
-                            SizedBox(height: 30),
-                          ],
-                        )),
-                      ],
-                    ),
-                  ),
+            SizedBox(
+              width: double.infinity,
+              height: double.infinity,
+              child: CustomPaint(
+                painter: LinearPainter(
+                  progress: progress,
+                  strokeCap: StrokeCap.round,
+                  paintingStyle: PaintingStyle.stroke,
                 ),
               ),
             ),
-            ElevatedButton(
-              onPressed: () => startAnimation(second * 100),
-              child: const Text("Start"),
-            ),
-            Container(
-              margin: EdgeInsets.only(top: 50),
-              child: ElevatedButton(
-                onPressed: () => resetAnimation(),
-                child: const Text("Reset"),
-              ),
-            )
+            // Center(
+            //   child: AspectRatio(
+            //     aspectRatio: 1,
+            //     child: Container(
+            //       margin: const EdgeInsets.all(50),
+            //       color: AppColor.darkPrimaryColor,
+            //       child: SquarePercentIndicator(
+            //         borderRadius: 10,
+            //         progress: progress,
+            //         progressWidth: 20,
+            //         shadowWidth: 20,
+            //         progressColor: AppColor.secondaryColor,
+            //         shadowColor: AppColor.primaryColor,
+            //         startAngle: StartAngle.topCenter,
+            //         reverse: true,
+            //         child: Column(
+            //           crossAxisAlignment: CrossAxisAlignment.center,
+            //           children: [
+            //             Expanded(
+            //               child: Column(
+            //                 crossAxisAlignment: CrossAxisAlignment.center,
+            //                 mainAxisAlignment: MainAxisAlignment.start,
+            //                 children: const [
+            //                   SizedBox(height: 30),
+            //                   Text(
+            //                     "ROUND",
+            //                     style: TextStyle(
+            //                       color: AppColor.white,
+            //                       fontSize: 30,
+            //                     ),
+            //                   ),
+            //                   Text(
+            //                     "3 of 5",
+            //                     style: TextStyle(
+            //                       color: AppColor.white,
+            //                       fontSize: 30,
+            //                     ),
+            //                   ),
+            //                 ],
+            //               ),
+            //             ),
+            //             Expanded(
+            //               child: Text(
+            //                 second.toString(),
+            //                 style: const TextStyle(
+            //                   fontSize: 100,
+            //                   fontWeight: FontWeight.bold,
+            //                   color: AppColor.white,
+            //                 ),
+            //               ),
+            //             ),
+            //             Expanded(
+            //               child: Column(
+            //                 crossAxisAlignment: CrossAxisAlignment.center,
+            //                 mainAxisAlignment: MainAxisAlignment.end,
+            //                 children: const [
+            //                   Text(
+            //                     "Pushups",
+            //                     style: TextStyle(
+            //                       color: AppColor.white,
+            //                       fontSize: 30,
+            //                     ),
+            //                   ),
+            //                   Text(
+            //                     "Next: Burpies",
+            //                     style: TextStyle(
+            //                       color: AppColor.backgroundColor,
+            //                       fontSize: 15,
+            //                     ),
+            //                   ),
+            //                   SizedBox(height: 30),
+            //                 ],
+            //               ),
+            //             ),
+            //           ],
+            //         ),
+            //       ),
+            //     ),
+            //   ),
+            // ),
           ],
         ),
       ),
