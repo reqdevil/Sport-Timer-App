@@ -47,7 +47,7 @@ class _SessionPageState extends State<SessionPage> {
                       "This will be placed Session",
                       style: TextStyle(
                         color: AppColor.white,
-                        fontSize: 30,
+                        fontSize: 20,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
@@ -74,7 +74,7 @@ class _SessionPageState extends State<SessionPage> {
                     ),
                     const Expanded(child: SizedBox.shrink()),
                     ElevatedButton(
-                      onPressed: () {},
+                      onPressed: () => Navigator.pop(context),
                       child: const Text("Load Session"),
                       style: ButtonStyle(
                         shape:
