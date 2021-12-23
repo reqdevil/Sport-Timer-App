@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:timer_app/Pages/CountdownPage.dart';
 import 'package:timer_app/Pages/SessionPage.dart';
+import 'package:timer_app/Pages/TestPage.dart';
 
 void main() {
   runApp(const TimerApp());
@@ -15,9 +17,14 @@ class TimerApp extends StatefulWidget {
 class _TimerAppState extends State<TimerApp> {
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
+    return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: SessionPage(),
+      initialRoute: 'countdown',
+      routes: {
+        'countdown': (context) => const CountdownPage(),
+        'session': (context) => const SessionPage(),
+        'test': (context) => const TestPage(),
+      },
     );
   }
 }
