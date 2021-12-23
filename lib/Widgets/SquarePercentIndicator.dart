@@ -3,8 +3,8 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:timer_app/Utilities/CenterRadialPainter.dart';
-import 'package:timer_app/Utilities/EdgeRadialPainter.dart';
+import 'package:timer_app/Painters/CenterRadialPainter.dart';
+import 'package:timer_app/Painters/EdgeRadialPainter.dart';
 import 'package:timer_app/Utilities/StartAngle.dart';
 
 class SquarePercentIndicator extends StatefulWidget {
