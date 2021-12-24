@@ -11,9 +11,105 @@ class SessionPage extends StatefulWidget {
 }
 
 class _SessionPageState extends State<SessionPage> {
+  final GlobalKey<ScaffoldState> _key = GlobalKey();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: _key,
+      drawer: Drawer(
+        elevation: 0,
+        backgroundColor: Colors.white.withOpacity(0.8),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(left: 8.0, top: 10.0),
+              child: Text(
+                'Settings',
+                style: TextStyle(
+                    color: Colors.grey[600],
+                    fontSize: 20.0,
+                    fontWeight: FontWeight.bold),
+                textAlign: TextAlign.center,
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Divider(
+                color: Colors.grey[600],
+                endIndent: 10,
+                thickness: .8,
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Text(
+                'Timer Presents',
+                style: TextStyle(
+                    color: Colors.grey[600],
+                    fontSize: 15.0,
+                    fontWeight: FontWeight.bold),
+                textAlign: TextAlign.start,
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Text(
+                'Color Schemes',
+                style: TextStyle(
+                    color: Colors.grey[600],
+                    fontSize: 15.0,
+                    fontWeight: FontWeight.bold),
+                textAlign: TextAlign.start,
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Text(
+                'Sounds',
+                style: TextStyle(
+                    color: Colors.grey[600],
+                    fontSize: 15.0,
+                    fontWeight: FontWeight.bold),
+                textAlign: TextAlign.start,
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Text(
+                'Session History',
+                style: TextStyle(
+                    color: Colors.grey[600],
+                    fontSize: 15.0,
+                    fontWeight: FontWeight.bold),
+                textAlign: TextAlign.start,
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Text(
+                'Privacy',
+                style: TextStyle(
+                    color: Colors.grey[600],
+                    fontSize: 15.0,
+                    fontWeight: FontWeight.bold),
+                textAlign: TextAlign.start,
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Text(
+                'About App',
+                style: TextStyle(
+                    color: Colors.grey[600],
+                    fontSize: 15.0,
+                    fontWeight: FontWeight.bold),
+                textAlign: TextAlign.start,
+              ),
+            )
+          ],
+        ),
+      ),
       body: Container(
         color: AppColor.backgroundColor,
         child: SafeArea(
@@ -22,7 +118,10 @@ class _SessionPageState extends State<SessionPage> {
             children: [
               IconButton(
                 alignment: Alignment.centerLeft,
-                onPressed: () {},
+                onPressed: () {
+                  _key.currentState!.openDrawer();
+                  // Scaffold.of(context).openDrawer();
+                },
                 icon: const Icon(
                   Icons.menu,
                   color: AppColor.white,
