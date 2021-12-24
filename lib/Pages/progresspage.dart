@@ -27,26 +27,30 @@ class _ProgressPageState extends State<ProgressPage>
     }
     WidgetsBinding.instance!.addPostFrameCallback((_) {
       if (mounted) {
-        int i = 0;
-        timer = Timer.periodic(const Duration(milliseconds: 10), (_) {
-          if (i == _list.length) {
-            timer.cancel();
-            print('cancelled');
-          }
-          if (i < _list.length) {
-            setState(() {
-              _list[i].percentage += 10;
-
-              // _list[i + 1].percentage = 0;
-            });
-          }
-
-          if (_list[i].percentage == 100) i++;
-          print(i);
-        });
+        startProgress();
       }
     });
     super.initState();
+  }
+
+  void startProgress() {
+    int i = 0;
+    timer = Timer.periodic(const Duration(milliseconds: 10), (_) {
+      if (i == _list.length) {
+        timer.cancel();
+        print('cancelled');
+      }
+      if (i < _list.length) {
+        setState(() {
+          _list[i].percentage += 10;
+
+          // _list[i + 1].percentage = 0;
+        });
+      }
+
+      if (_list[i].percentage == 100) i++;
+      print(i);
+    });
   }
 
   @override
@@ -60,7 +64,7 @@ class _ProgressPageState extends State<ProgressPage>
     return Scaffold(
       backgroundColor: Colors.pink[50],
       body: Stack(
-        fit: StackFit.expand,
+        // fit: StackFit.expand,
         clipBehavior: Clip.antiAlias,
         alignment: Alignment.center,
         children: [
@@ -110,7 +114,31 @@ class _ProgressPageState extends State<ProgressPage>
                 ),
               ),
             ),
-          )
+          ),
+          Align(
+            alignment: Alignment.topLeft,
+            child: ElevatedButton(
+              onPressed: () {
+                setState(() {
+                  for (var item in _list) {
+                    item.percentage = 0;
+                  }
+                  startProgress();
+                });
+              },
+              style: ElevatedButton.styleFrom(
+                elevation: 0,
+                minimumSize: const Size(32, 32),
+                padding: const EdgeInsets.all(0),
+                primary: Colors.purple,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(16),
+                ),
+              ),
+              child: const Icon(Icons.restart_alt_sharp,
+                  color: Colors.white, size: 20),
+            ),
+          ),
         ],
       ),
     );
