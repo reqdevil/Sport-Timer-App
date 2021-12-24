@@ -123,6 +123,7 @@ class _ProgressPageState extends State<ProgressPage>
                   for (var item in _list) {
                     item.percentage = 0;
                   }
+                  timer.cancel();
                   startProgress();
                 });
               },
