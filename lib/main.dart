@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:timer_app/Pages/CountdownPage.dart';
 import 'package:timer_app/Pages/SessionPage.dart';
 import 'package:timer_app/Pages/TestPage.dart';
+import 'package:timer_app/Pages/progresspage.dart';
 
 void main() {
   runApp(const TimerApp());
@@ -23,7 +24,7 @@ class _TimerAppState extends State<TimerApp> {
       routes: {
         'countdown': (context) => const CountdownPage(),
         'session': (context) => const SessionPage(),
-        'test': (context) => const TestPage(),
+        'test': (context) => const ProgressPage(),
       },
     );
   }
