@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:timer_app/Helpers/basichelpers.dart';
 import 'package:timer_app/Pages/CountdownPage.dart';
 import 'package:timer_app/Pages/SessionPage.dart';
 import 'package:timer_app/Pages/TestPage.dart';
@@ -16,6 +17,12 @@ class TimerApp extends StatefulWidget {
 }
 
 class _TimerAppState extends State<TimerApp> {
+  @override
+  void initState() {
+    BasicHelpers().hideStatusbar();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
