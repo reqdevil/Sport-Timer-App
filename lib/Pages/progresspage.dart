@@ -5,6 +5,9 @@ import 'package:flutter/material.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 import 'dart:math' as math;
 
+import 'package:timer_app/Utilities/AppColor.dart';
+import 'package:timer_app/Widgets/ballwidget.dart';
+
 class ProgressPage extends StatefulWidget {
   const ProgressPage({Key? key}) : super(key: key);
 
@@ -16,9 +19,16 @@ class _ProgressPageState extends State<ProgressPage>
     with SingleTickerProviderStateMixin {
   final List<LinearProgress> _list = [];
   late Timer timer;
-
+  late Color _color;
+  late bool isBlinking;
+  int _interval = 10;
   @override
   void initState() {
+    setState(() {
+      isBlinking = false;
+    });
+
+    _color = AppColor.primaryColor;
     for (var i = 0; i < 30; i++) {
       LinearProgress item =
           LinearProgress(GlobalObjectKey('key' + i.toString()), 0);
@@ -34,10 +44,16 @@ class _ProgressPageState extends State<ProgressPage>
   }
 
   void startProgress() {
+    setState(() {
+      isBlinking = true;
+    });
     int i = 0;
-    timer = Timer.periodic(const Duration(milliseconds: 10), (_) {
+    timer = Timer.periodic(Duration(milliseconds: _interval), (_) {
       if (i == _list.length) {
         timer.cancel();
+        setState(() {
+          isBlinking = false;
+        });
         print('cancelled');
       }
       if (i < _list.length) {
@@ -48,7 +64,17 @@ class _ProgressPageState extends State<ProgressPage>
         });
       }
 
-      if (_list[i].percentage == 100) i++;
+      if (_list[i].percentage == 100) {
+        // setState(() {
+        //   if (_color == AppColor.primaryColor) {
+        //     _color = AppColor.secondaryColor;
+        //   } else if (_color == AppColor.secondaryColor) {
+        //     _color = AppColor.primaryColor;
+        //   }
+        // });
+        i++;
+      }
+
       print(i);
     });
   }
@@ -116,7 +142,7 @@ class _ProgressPageState extends State<ProgressPage>
             ),
           ),
           Align(
-            alignment: Alignment.topLeft,
+            alignment: Alignment.bottomLeft,
             child: ElevatedButton(
               onPressed: () {
                 setState(() {
@@ -140,6 +166,17 @@ class _ProgressPageState extends State<ProgressPage>
                   color: Colors.white, size: 20),
             ),
           ),
+          Align(
+            alignment: Alignment.topCenter,
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Ball(
+                  isBlinking: isBlinking,
+                  primaryColor: AppColor.primaryColor,
+                  secondaryColor: AppColor.secondaryColor,
+                  interval: _interval * 10),
+            ),
+          )
         ],
       ),
     );
