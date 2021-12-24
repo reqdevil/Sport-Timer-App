@@ -18,17 +18,20 @@ class ProgressPage extends StatefulWidget {
 class _ProgressPageState extends State<ProgressPage>
     with SingleTickerProviderStateMixin {
   final List<LinearProgress> _list = [];
+  late List<BallItem> _listBall = [];
   late Timer timer;
-  late Color _color;
-  late bool isBlinking;
+  late Timer timerProcess;
   int _interval = 10;
+  int _currentBallIndex = 0;
   @override
   void initState() {
+    for (var i = 0; i < 5; i++) {
+      BallItem itemBall = BallItem(false, _interval * 10);
+      _listBall.add(itemBall);
+    }
     setState(() {
-      isBlinking = false;
+      _listBall[0].isBlinking = true;
     });
-
-    _color = AppColor.primaryColor;
     for (var i = 0; i < 30; i++) {
       LinearProgress item =
           LinearProgress(GlobalObjectKey('key' + i.toString()), 0);
@@ -37,23 +40,35 @@ class _ProgressPageState extends State<ProgressPage>
     }
     WidgetsBinding.instance!.addPostFrameCallback((_) {
       if (mounted) {
-        startProgress();
+        startProgress(_currentBallIndex);
       }
     });
     super.initState();
   }
 
-  void startProgress() {
-    setState(() {
-      isBlinking = true;
-    });
+  Future<void> startProgress(int ballIndex) async {
     int i = 0;
+    setState(() {
+      for (var item in _listBall) {
+        if (item == _listBall[ballIndex]) {
+          item.isBlinking = true;
+        } else {
+          item.isBlinking = false;
+        }
+      }
+    });
     timer = Timer.periodic(Duration(milliseconds: _interval), (_) {
       if (i == _list.length) {
-        timer.cancel();
         setState(() {
-          isBlinking = false;
+          if (i % _listBall.length == 0) {
+            _listBall[ballIndex].isBlinking = false;
+          }
+          timer.cancel();
+          if (ballIndex < _listBall.length - 1) {
+            _currentBallIndex++;
+          }
         });
+
         print('cancelled');
       }
       if (i < _list.length) {
@@ -65,13 +80,6 @@ class _ProgressPageState extends State<ProgressPage>
       }
 
       if (_list[i].percentage == 100) {
-        // setState(() {
-        //   if (_color == AppColor.primaryColor) {
-        //     _color = AppColor.secondaryColor;
-        //   } else if (_color == AppColor.secondaryColor) {
-        //     _color = AppColor.primaryColor;
-        //   }
-        // });
         i++;
       }
 
@@ -82,6 +90,7 @@ class _ProgressPageState extends State<ProgressPage>
   @override
   void dispose() {
     timer.cancel();
+    timerProcess.cancel();
     super.dispose();
   }
 
@@ -142,15 +151,49 @@ class _ProgressPageState extends State<ProgressPage>
             ),
           ),
           Align(
+            alignment: Alignment.topCenter,
+            child: Padding(
+              padding: EdgeInsets.zero,
+              child: SizedBox(
+                height: MediaQuery.of(context).size.width / 8,
+                child: ListView.builder(
+                  shrinkWrap: true,
+                  padding: const EdgeInsets.all(8),
+                  scrollDirection: Axis.horizontal,
+                  itemCount: _listBall.length,
+                  itemBuilder: (context, index) {
+                    return Ball(
+                        isBlinking: _listBall[index].isBlinking,
+                        primaryColor: AppColor.primaryColor,
+                        secondaryColor: AppColor.secondaryColor,
+                        interval: _listBall[index].interval);
+                  },
+                ),
+              ),
+            ),
+          ),
+          Align(
             alignment: Alignment.bottomLeft,
             child: ElevatedButton(
               onPressed: () {
-                setState(() {
-                  for (var item in _list) {
-                    item.percentage = 0;
+                timerProcess = Timer.periodic(const Duration(seconds: 5), (_) {
+                  print("Current ball:" + _currentBallIndex.toString());
+                  if (_currentBallIndex == _listBall.length) {
+                    timerProcess.cancel();
+                    _currentBallIndex = 0;
+                    return;
                   }
-                  timer.cancel();
-                  startProgress();
+                  setState(() {
+                    for (var item in _list) {
+                      item.percentage = 0;
+                    }
+
+                    timer.cancel();
+
+                    // timer.cancel();
+
+                    startProgress(_currentBallIndex);
+                  });
                 });
               },
               style: ElevatedButton.styleFrom(
@@ -166,17 +209,6 @@ class _ProgressPageState extends State<ProgressPage>
                   color: Colors.white, size: 20),
             ),
           ),
-          Align(
-            alignment: Alignment.topCenter,
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Ball(
-                  isBlinking: isBlinking,
-                  primaryColor: AppColor.primaryColor,
-                  secondaryColor: AppColor.secondaryColor,
-                  interval: _interval * 10),
-            ),
-          )
         ],
       ),
     );
@@ -189,4 +221,10 @@ class LinearProgress {
   int percentage;
 
   LinearProgress(this.key, this.percentage);
+}
+
+class BallItem {
+  bool isBlinking;
+  int interval;
+  BallItem(this.isBlinking, this.interval);
 }

@@ -46,6 +46,10 @@ class _BallState extends State<Ball> {
             _color = widget.primaryColor;
           }
         });
+      } else {
+        setState(() {
+          _color = widget.primaryColor;
+        });
       }
     });
   }
