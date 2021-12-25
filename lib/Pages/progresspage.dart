@@ -24,6 +24,7 @@ class _ProgressPageState extends State<ProgressPage>
   late Timer timerProcess;
   int _interval = 10;
   int _currentBallIndex = 0;
+  int _currentProgressIndex = 0;
   int _progressBarCount = 30;
   int _ballItemCount = 5;
   @override
@@ -59,6 +60,7 @@ class _ProgressPageState extends State<ProgressPage>
       _list[i].percentage = 0;
     }
     int i = 0;
+    // _currentProgressIndex = i;
     _currentBallIndex = ballIndex;
     setState(() {
       for (var item in _listBall) {
