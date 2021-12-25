@@ -18,15 +18,14 @@ class ProgressPage extends StatefulWidget {
 
 class _ProgressPageState extends State<ProgressPage>
     with SingleTickerProviderStateMixin {
-  final List<LinearProgress> _list = [];
+  final List<LinearProgress> _listProgress = [];
   final List<BallItem> _listBall = [];
   late Timer timer;
-  late Timer timerProcess;
   int _interval = 10;
   int _currentBallIndex = 0;
-  int _currentProgressIndex = 0;
   int _progressBarCount = 30;
   int _ballItemCount = 5;
+  bool _firstStart = false;
   @override
   void initState() {
     for (var i = 0; i < _ballItemCount; i++) {
@@ -40,10 +39,13 @@ class _ProgressPageState extends State<ProgressPage>
       LinearProgress item =
           LinearProgress(GlobalObjectKey('key' + i.toString()), 0);
 
-      _list.add(item);
+      _listProgress.add(item);
     }
     WidgetsBinding.instance!.addPostFrameCallback((_) async {
       if (mounted) {
+        setState(() {
+          _firstStart = true;
+        });
         await startProgress(_currentBallIndex);
       }
     });
@@ -56,11 +58,10 @@ class _ProgressPageState extends State<ProgressPage>
       _listBall[ballIndex - 1].isBlinking = false;
       return;
     }
-    for (var i = 0; i < _list.length; i++) {
-      _list[i].percentage = 0;
+    for (var i = 0; i < _listProgress.length; i++) {
+      _listProgress[i].percentage = 0;
     }
     int i = 0;
-    // _currentProgressIndex = i;
     _currentBallIndex = ballIndex;
     setState(() {
       for (var item in _listBall) {
@@ -72,7 +73,7 @@ class _ProgressPageState extends State<ProgressPage>
       }
     });
     timer = Timer.periodic(Duration(milliseconds: _interval), (_) async {
-      if (i == _list.length) {
+      if (i == _listProgress.length) {
         if (kDebugMode) {
           print('cancelled');
         }
@@ -81,13 +82,13 @@ class _ProgressPageState extends State<ProgressPage>
         _currentBallIndex++;
         await startProgress(_currentBallIndex);
       }
-      if (i < _list.length) {
+      if (i < _listProgress.length) {
         setState(() {
-          _list[i].percentage += 10;
+          _listProgress[i].percentage += 10;
         });
       }
 
-      if (_list[i].percentage == 100) {
+      if (_listProgress[i].percentage == 100) {
         i++;
       }
 
@@ -100,7 +101,6 @@ class _ProgressPageState extends State<ProgressPage>
   @override
   void dispose() {
     timer.cancel();
-    timerProcess.cancel();
     super.dispose();
   }
 
@@ -125,7 +125,7 @@ class _ProgressPageState extends State<ProgressPage>
                   child: Transform.rotate(
                     angle: -math.pi / 22,
                     child: LinearPercentIndicator(
-                      key: _list[itemIndex].key,
+                      key: _listProgress[itemIndex].key,
                       padding: const EdgeInsets.symmetric(horizontal: 0.0),
                       curve: Curves.linear,
                       restartAnimation: false,
@@ -136,8 +136,11 @@ class _ProgressPageState extends State<ProgressPage>
                       animateFromLastPercent: true,
                       width: MediaQuery.of(context).size.width,
                       lineHeight: 18.0,
-                      percent: _list.isNotEmpty
-                          ? _list.reversed.toList()[itemIndex].percentage / 100
+                      percent: _listProgress.isNotEmpty
+                          ? _listProgress.reversed
+                                  .toList()[itemIndex]
+                                  .percentage /
+                              100
                           : 0.0,
                       linearStrokeCap: LinearStrokeCap.roundAll,
                       backgroundColor: Colors.white,
@@ -184,44 +187,36 @@ class _ProgressPageState extends State<ProgressPage>
           ),
           Align(
             alignment: Alignment.bottomLeft,
-            child: ElevatedButton(
-              onPressed: () {
-                _currentBallIndex = 0;
-                timer.cancel();
-                // timerProcess.cancel();
-                for (var i = 0; i < _listBall.length; i++) {
-                  setState(() {
-                    _listBall[i].isBlinking = false;
-                  });
-                }
-                for (var i = 0; i < _list.length; i++) {
-                  setState(() {
-                    _list[i].percentage = 0;
-                  });
-                }
-
-                timerProcess =
-                    Timer.periodic(const Duration(seconds: 5), (_) async {
-                  if (_currentBallIndex == _listBall.length) {
-                    timer.cancel();
-                    timerProcess.cancel();
-                    _listBall[_currentBallIndex - 1].isBlinking = false;
-                    return;
+            child: Visibility(
+              visible: _firstStart,
+              child: ElevatedButton(
+                onPressed: () async {
+                  _currentBallIndex = 0;
+                  timer.cancel();
+                  for (var i = 0; i < _listBall.length; i++) {
+                    setState(() {
+                      _listBall[i].isBlinking = false;
+                    });
+                  }
+                  for (var i = 0; i < _listProgress.length; i++) {
+                    setState(() {
+                      _listProgress[i].percentage = 0;
+                    });
                   }
                   await startProgress(_currentBallIndex);
-                });
-              },
-              style: ElevatedButton.styleFrom(
-                elevation: 0,
-                minimumSize: const Size(32, 32),
-                padding: const EdgeInsets.all(0),
-                primary: Colors.purple,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(16),
+                },
+                style: ElevatedButton.styleFrom(
+                  elevation: 0,
+                  minimumSize: const Size(32, 32),
+                  padding: const EdgeInsets.all(0),
+                  primary: Colors.purple,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(16),
+                  ),
                 ),
+                child: const Icon(Icons.restart_alt_sharp,
+                    color: Colors.white, size: 20),
               ),
-              child: const Icon(Icons.restart_alt_sharp,
-                  color: Colors.white, size: 20),
             ),
           ),
         ],
