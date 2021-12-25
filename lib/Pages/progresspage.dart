@@ -8,6 +8,7 @@ import 'dart:math' as math;
 
 import 'package:timer_app/Utilities/AppColor.dart';
 import 'package:timer_app/Widgets/ballwidget.dart';
+import 'package:timer_app/Widgets/customdialogbox.dart';
 
 class ProgressPage extends StatefulWidget {
   const ProgressPage({Key? key}) : super(key: key);
@@ -52,11 +53,27 @@ class _ProgressPageState extends State<ProgressPage>
     super.initState();
   }
 
-  // int _currentProgressIndex = 0;
   Future<void> startProgress(int ballIndex) async {
     if (ballIndex == _listBall.length) {
-      _listBall[ballIndex - 1].isBlinking = false;
-      return;
+      setState(() {
+        _listBall[ballIndex - 1].isBlinking = false;
+      });
+
+      return showDialog(
+          barrierDismissible: false,
+          context: context,
+          builder: (BuildContext context) {
+            return WillPopScope(
+              onWillPop: () => Future.value(false),
+              child: const CustomDialogBox(
+                title: "",
+                descriptions: 'FINISHED',
+                submitText: 'OK',
+                widget: Icon(Icons.thumb_up_alt_rounded,
+                    color: AppColor.primaryColor, size: 50),
+              ),
+            );
+          });
     }
     for (var i = 0; i < _listProgress.length; i++) {
       _listProgress[i].percentage = 0;
