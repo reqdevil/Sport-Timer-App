@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:ui';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 import 'dart:math' as math;
@@ -18,36 +19,47 @@ class ProgressPage extends StatefulWidget {
 class _ProgressPageState extends State<ProgressPage>
     with SingleTickerProviderStateMixin {
   final List<LinearProgress> _list = [];
-  late List<BallItem> _listBall = [];
+  final List<BallItem> _listBall = [];
   late Timer timer;
   late Timer timerProcess;
   int _interval = 10;
   int _currentBallIndex = 0;
+  int _progressBarCount = 30;
+  int _ballItemCount = 5;
   @override
   void initState() {
-    for (var i = 0; i < 5; i++) {
+    for (var i = 0; i < _ballItemCount; i++) {
       BallItem itemBall = BallItem(false, _interval * 10);
       _listBall.add(itemBall);
     }
     setState(() {
       _listBall[0].isBlinking = true;
     });
-    for (var i = 0; i < 30; i++) {
+    for (var i = 0; i < _progressBarCount; i++) {
       LinearProgress item =
           LinearProgress(GlobalObjectKey('key' + i.toString()), 0);
 
       _list.add(item);
     }
-    WidgetsBinding.instance!.addPostFrameCallback((_) {
+    WidgetsBinding.instance!.addPostFrameCallback((_) async {
       if (mounted) {
-        startProgress(_currentBallIndex);
+        await startProgress(_currentBallIndex);
       }
     });
     super.initState();
   }
 
+  // int _currentProgressIndex = 0;
   Future<void> startProgress(int ballIndex) async {
+    if (ballIndex == _listBall.length) {
+      _listBall[ballIndex - 1].isBlinking = false;
+      return;
+    }
+    for (var i = 0; i < _list.length; i++) {
+      _list[i].percentage = 0;
+    }
     int i = 0;
+    _currentBallIndex = ballIndex;
     setState(() {
       for (var item in _listBall) {
         if (item == _listBall[ballIndex]) {
@@ -57,25 +69,19 @@ class _ProgressPageState extends State<ProgressPage>
         }
       }
     });
-    timer = Timer.periodic(Duration(milliseconds: _interval), (_) {
+    timer = Timer.periodic(Duration(milliseconds: _interval), (_) async {
       if (i == _list.length) {
-        setState(() {
-          if (i % _listBall.length == 0) {
-            _listBall[ballIndex].isBlinking = false;
-          }
-          timer.cancel();
-          if (ballIndex < _listBall.length - 1) {
-            _currentBallIndex++;
-          }
-        });
+        if (kDebugMode) {
+          print('cancelled');
+        }
 
-        print('cancelled');
+        timer.cancel();
+        _currentBallIndex++;
+        await startProgress(_currentBallIndex);
       }
       if (i < _list.length) {
         setState(() {
           _list[i].percentage += 10;
-
-          // _list[i + 1].percentage = 0;
         });
       }
 
@@ -83,7 +89,9 @@ class _ProgressPageState extends State<ProgressPage>
         i++;
       }
 
-      print(i);
+      if (kDebugMode) {
+        print(i);
+      }
     });
   }
 
@@ -155,7 +163,7 @@ class _ProgressPageState extends State<ProgressPage>
             child: Padding(
               padding: EdgeInsets.zero,
               child: SizedBox(
-                height: MediaQuery.of(context).size.width / 8,
+                height: MediaQuery.of(context).size.width / 6,
                 child: ListView.builder(
                   shrinkWrap: true,
                   padding: const EdgeInsets.all(8),
@@ -176,24 +184,29 @@ class _ProgressPageState extends State<ProgressPage>
             alignment: Alignment.bottomLeft,
             child: ElevatedButton(
               onPressed: () {
-                timerProcess = Timer.periodic(const Duration(seconds: 5), (_) {
-                  print("Current ball:" + _currentBallIndex.toString());
+                _currentBallIndex = 0;
+                timer.cancel();
+                // timerProcess.cancel();
+                for (var i = 0; i < _listBall.length; i++) {
+                  setState(() {
+                    _listBall[i].isBlinking = false;
+                  });
+                }
+                for (var i = 0; i < _list.length; i++) {
+                  setState(() {
+                    _list[i].percentage = 0;
+                  });
+                }
+
+                timerProcess =
+                    Timer.periodic(const Duration(seconds: 5), (_) async {
                   if (_currentBallIndex == _listBall.length) {
+                    timer.cancel();
                     timerProcess.cancel();
-                    _currentBallIndex = 0;
+                    _listBall[_currentBallIndex - 1].isBlinking = false;
                     return;
                   }
-                  setState(() {
-                    for (var item in _list) {
-                      item.percentage = 0;
-                    }
-
-                    timer.cancel();
-
-                    // timer.cancel();
-
-                    startProgress(_currentBallIndex);
-                  });
+                  await startProgress(_currentBallIndex);
                 });
               },
               style: ElevatedButton.styleFrom(

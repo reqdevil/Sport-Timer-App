@@ -57,8 +57,8 @@ class _BallState extends State<Ball> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: MediaQuery.of(context).size.width / 9,
-      width: MediaQuery.of(context).size.width / 9,
+      height: MediaQuery.of(context).size.width / 6,
+      width: MediaQuery.of(context).size.width / 7,
       decoration: BoxDecoration(
           color: _color,
           shape: BoxShape.circle,
