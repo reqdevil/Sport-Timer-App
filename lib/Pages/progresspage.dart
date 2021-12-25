@@ -29,7 +29,7 @@ class _ProgressPageState extends State<ProgressPage>
   @override
   void initState() {
     for (var i = 0; i < _ballItemCount; i++) {
-      BallItem itemBall = BallItem(false, _interval * 10);
+      BallItem itemBall = BallItem(false, _interval * 50);
       _listBall.add(itemBall);
     }
     setState(() {
