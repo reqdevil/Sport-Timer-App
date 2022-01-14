@@ -1,25 +1,30 @@
+// ignore: file_names
+
 import 'dart:async';
-
 import 'package:flutter/widgets.dart';
+import 'package:timer_app/Utilities/AppColor.dart';
 
-class Ball extends StatefulWidget {
-  bool isBlinking;
-  Color primaryColor;
-  Color secondaryColor;
-  int interval;
-  Ball(
-      {Key? key,
-      required this.isBlinking,
-      required this.primaryColor,
-      required this.secondaryColor,
-      required this.interval})
-      : super(key: key);
+class BallWidget extends StatefulWidget {
+  final bool isBlinking;
+  final Color primaryColor;
+  final Color secondaryColor;
+  final int interval;
+  final int number;
+
+  const BallWidget({
+    Key? key,
+    required this.isBlinking,
+    required this.primaryColor,
+    required this.secondaryColor,
+    required this.interval,
+    required this.number,
+  }) : super(key: key);
 
   @override
   _BallState createState() => _BallState();
 }
 
-class _BallState extends State<Ball> {
+class _BallState extends State<BallWidget> {
   late Color _color;
   late Timer _timer;
   @override
@@ -60,9 +65,19 @@ class _BallState extends State<Ball> {
       height: MediaQuery.of(context).size.width / 6,
       width: MediaQuery.of(context).size.width / 7,
       decoration: BoxDecoration(
-          color: _color,
-          shape: BoxShape.circle,
-          border: Border.all(width: 1, color: _color)),
+        color: _color,
+        shape: BoxShape.circle,
+        border: Border.all(width: 1, color: _color),
+      ),
+      child: Center(
+        child: Text(
+          widget.number.toString(),
+          style: const TextStyle(
+            fontSize: 30,
+            color: AppColor.white,
+          ),
+        ),
+      ),
     );
   }
 }

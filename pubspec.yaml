@@ -36,6 +36,7 @@ dependencies:
   cupertino_icons: ^1.0.2
   matrix4_transform: ^2.0.1
   percent_indicator: ^3.4.0
+  flutter_styled_toast: ^2.0.0
 
 dev_dependencies:
   flutter_test:

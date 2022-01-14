@@ -8,11 +8,9 @@ class CustomButton extends StatelessWidget {
   final Icon? icon;
   final double? buttonHeight;
   final double? buttonWidth;
-  // final ContentFontWeigth? fontWeigth;
   final bool? isEnabled;
   final Color? textColor;
   final bool? isShadowed;
-  // final ButtonType? buttonType;
   final TextAlign? textAlign;
   final double? letterSpacing;
 
@@ -23,11 +21,9 @@ class CustomButton extends StatelessWidget {
     this.icon,
     this.buttonHeight,
     this.buttonWidth,
-    // this.fontWeigth = ContentFontWeigth.regular,
     this.secondaryLabelText = "",
     this.textColor,
     this.isShadowed = false,
-    // this.buttonType = ButtonType.submitGrey,
     this.textAlign = TextAlign.center,
     this.letterSpacing,
     this.isEnabled,

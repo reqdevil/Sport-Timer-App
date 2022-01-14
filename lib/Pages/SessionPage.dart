@@ -27,9 +27,10 @@ class _SessionPageState extends State<SessionPage> {
               child: Text(
                 'Settings',
                 style: TextStyle(
-                    color: Colors.grey[600],
-                    fontSize: 20.0,
-                    fontWeight: FontWeight.bold),
+                  color: Colors.grey[600],
+                  fontSize: 20.0,
+                  fontWeight: FontWeight.bold,
+                ),
                 textAlign: TextAlign.center,
               ),
             ),
@@ -46,9 +47,10 @@ class _SessionPageState extends State<SessionPage> {
               child: Text(
                 'Timer Presents',
                 style: TextStyle(
-                    color: Colors.grey[600],
-                    fontSize: 15.0,
-                    fontWeight: FontWeight.bold),
+                  color: Colors.grey[600],
+                  fontSize: 15.0,
+                  fontWeight: FontWeight.bold,
+                ),
                 textAlign: TextAlign.start,
               ),
             ),
@@ -57,9 +59,10 @@ class _SessionPageState extends State<SessionPage> {
               child: Text(
                 'Color Schemes',
                 style: TextStyle(
-                    color: Colors.grey[600],
-                    fontSize: 15.0,
-                    fontWeight: FontWeight.bold),
+                  color: Colors.grey[600],
+                  fontSize: 15.0,
+                  fontWeight: FontWeight.bold,
+                ),
                 textAlign: TextAlign.start,
               ),
             ),
@@ -68,9 +71,10 @@ class _SessionPageState extends State<SessionPage> {
               child: Text(
                 'Sounds',
                 style: TextStyle(
-                    color: Colors.grey[600],
-                    fontSize: 15.0,
-                    fontWeight: FontWeight.bold),
+                  color: Colors.grey[600],
+                  fontSize: 15.0,
+                  fontWeight: FontWeight.bold,
+                ),
                 textAlign: TextAlign.start,
               ),
             ),
@@ -79,9 +83,10 @@ class _SessionPageState extends State<SessionPage> {
               child: Text(
                 'Session History',
                 style: TextStyle(
-                    color: Colors.grey[600],
-                    fontSize: 15.0,
-                    fontWeight: FontWeight.bold),
+                  color: Colors.grey[600],
+                  fontSize: 15.0,
+                  fontWeight: FontWeight.bold,
+                ),
                 textAlign: TextAlign.start,
               ),
             ),
@@ -90,9 +95,10 @@ class _SessionPageState extends State<SessionPage> {
               child: Text(
                 'Privacy',
                 style: TextStyle(
-                    color: Colors.grey[600],
-                    fontSize: 15.0,
-                    fontWeight: FontWeight.bold),
+                  color: Colors.grey[600],
+                  fontSize: 15.0,
+                  fontWeight: FontWeight.bold,
+                ),
                 textAlign: TextAlign.start,
               ),
             ),
@@ -101,9 +107,10 @@ class _SessionPageState extends State<SessionPage> {
               child: Text(
                 'About App',
                 style: TextStyle(
-                    color: Colors.grey[600],
-                    fontSize: 15.0,
-                    fontWeight: FontWeight.bold),
+                  color: Colors.grey[600],
+                  fontSize: 15.0,
+                  fontWeight: FontWeight.bold,
+                ),
                 textAlign: TextAlign.start,
               ),
             )
@@ -120,7 +127,6 @@ class _SessionPageState extends State<SessionPage> {
                 alignment: Alignment.centerLeft,
                 onPressed: () {
                   _key.currentState!.openDrawer();
-                  // Scaffold.of(context).openDrawer();
                 },
                 icon: const Icon(
                   Icons.menu,

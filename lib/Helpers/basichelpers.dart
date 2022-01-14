@@ -1,13 +1,19 @@
+// ignore: file_names
+
 import 'package:flutter/services.dart';
 
 class BasicHelpers {
   hideStatusbar() {
-    SystemChrome.setEnabledSystemUIOverlays([
-      SystemUiOverlay.bottom, //This line is used for showing the bottom bar
-    ]);
+    SystemChrome.setEnabledSystemUIMode(
+      SystemUiMode.manual,
+      overlays: [SystemUiOverlay.bottom],
+    );
   }
 
   showStatusbar() {
-    SystemChrome.setEnabledSystemUIOverlays(SystemUiOverlay.values);
+    SystemChrome.setEnabledSystemUIMode(
+      SystemUiMode.manual,
+      overlays: SystemUiOverlay.values,
+    );
   }
 }
